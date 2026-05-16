@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import path from 'path'
-
 export default {
   name: 'SidebarItem',
   props: {
@@ -73,7 +71,9 @@ export default {
       if (routePath === '') {
         return this.basePath
       }
-      return path.resolve(this.basePath, routePath)
+      const base = this.basePath.replace(/\/$/, '')
+      const route = routePath.replace(/^\//, '')
+      return base + '/' + route
     }
   }
 }

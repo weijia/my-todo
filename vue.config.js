@@ -27,19 +27,19 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    config.plugin('preload').tap(() => [
-      {
-        rel: 'preload',
-        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
-    ])
+    // preload plugin may not exist in newer vue-cli versions
+    if (config.plugins.has('preload')) {
+      config.plugin('preload').tap(() => [
+        {
+          rel: 'preload',
+          fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+          include: 'initial'
+        }
+      ])
+    }
 
-    config.plugins.delete('prefetch')
-
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    if (config.plugins.has('prefetch')) {
+      config.plugins.delete('prefetch')
+    }
   }
 }
